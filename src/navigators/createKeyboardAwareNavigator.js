@@ -19,7 +19,10 @@ export default (Navigator, navigatorConfig) =>
     }
 
     _handleGestureBegin = () => {
-      this._previouslyFocusedTextInput = TextInput.State.currentlyFocusedField();
+      this._previouslyFocusedTextInput = TextInput.State.currentlyFocusedInput
+        ? // @ts-ignore
+          TextInput.State.currentlyFocusedInput()
+        : TextInput.State.currentlyFocusedField();
       if (this._previouslyFocusedTextInput) {
         TextInput.State.blurTextInput(this._previouslyFocusedTextInput);
       }
@@ -43,7 +46,10 @@ export default (Navigator, navigatorConfig) =>
       // in the case where the index did not change, I believe. We
       // should revisit this after 2.0 release.
       if (transitionProps.index !== prevTransitionProps.index) {
-        const currentField = TextInput.State.currentlyFocusedField();
+        const currentField = TextInput.State.currentlyFocusedInput
+          ? // @ts-ignore
+            TextInput.State.currentlyFocusedInput()
+          : TextInput.State.currentlyFocusedField();
         if (currentField) {
           TextInput.State.blurTextInput(currentField);
         }
